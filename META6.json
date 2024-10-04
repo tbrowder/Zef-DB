@@ -1,0 +1,25 @@
+{
+  "auth": "zef:tbrowder",
+  "authors": [
+    "Tom Browder"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "Provides Raku program 'zdb' to manage user module collections",
+  "license": "Artistic-2.0",
+  "name": "Zef::DB",
+  "perl": "6.d",
+  "provides": {
+    "Zef::DB": "lib/Zef/DB.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}
