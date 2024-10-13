@@ -1,6 +1,0 @@
-use Test;
-use Zef::DB;
-
-pass "replace me";
-
-done-testing;

@@ -14,7 +14,9 @@ use Zef::DB;
 
 =head1 DESCRIPTION
 
-B<Zef::DB> is ...
+B<Zef::DB> can be used to test, locate, update, install, remove, and clone
+a user's module collection. All new data is updated into a CSV file
+that can be managed with CSV::Table.
 
 =head1 AUTHOR
 

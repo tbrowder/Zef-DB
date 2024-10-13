@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/tbrowder/Zef-DB/actions/workflows/linux.yml/badge.svg)](https://github.com/tbrowder/Zef-DB/actions) [![Actions Status](https://github.com/tbrowder/Zef-DB/actions/workflows/macos.yml/badge.svg)](https://github.com/tbrowder/Zef-DB/actions) [![Actions Status](https://github.com/tbrowder/Zef-DB/actions/workflows/windows.yml/badge.svg)](https://github.com/tbrowder/Zef-DB/actions)
+
 NAME
 ====
 
@@ -13,7 +15,7 @@ use Zef::DB;
 DESCRIPTION
 ===========
 
-**Zef::DB** is ...
+**Zef::DB** can be used to test, locate, update, install, remove, and clone a user's module collection. All new data is updated into a CSV file that can be managed with CSV::Table.
 
 AUTHOR
 ======

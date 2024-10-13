@@ -6,6 +6,10 @@
   "build-depends": [
   ],
   "depends": [
+    "Text::Utils",
+    "CSV::Table",
+    "File::Find",
+    "MacOS::NativeLib"
   ],
   "description": "Provides Raku program 'zdb' to manage user module collections",
   "license": "Artistic-2.0",
@@ -16,8 +20,9 @@
   },
   "resources": [
   ],
-  "source-url": "",
+  "source-url": "https://github.com/tbrowder/Zef-DB.git",
   "tags": [
+    "zef modules"
   ],
   "test-depends": [
   ],
