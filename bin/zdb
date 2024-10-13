@@ -1,7 +1,7 @@
 #!/usr/bin/env raku
 
 use Zef::DB;
-use CSV::Table;
+#use CSV::Table;
 
 =begin comment
 use lib ".";
@@ -9,6 +9,7 @@ use lib ".";
 use DWarring;
 =end comment
 
+=begin comment
 say "DEBUG: dwarring has ", @dwarring.elems;
 my @m = <
 MacOS::NativeLib
@@ -21,46 +22,30 @@ PDF::Font::Loader
 PDF::Font::Loader::HarfBuzz
 PDF::Lite
 >;
+=end comment
 
-my $latest  = 0;
-my $show    = 0;
-my $remove  = 0;
-my $upgrade = 0;
-my $info    = 0;
+my @args = @*ARGS;
 
-if not @*ARGS.elems {
-    print qq:to/HERE/;
-    Usage: {$*PROGRAM.basename} <mode> [list=X]
-   
-    Given a list of Raku module names in the
-    default text file list 'localmodules', uses 
-    'zef' to query its databases to provide 
-    information on those modules.
-
-    Modes:
-      info    - auth, ver, api
-      latest  - latest version available
-      remove  - remove all but the latest version
-      show    - info on the installed versions
-      upgrade - upgrade all if need be
-
-    Options:
-      list=X  - use list in file X
-    HERE
-    exit;
+if not @args.elems {
+    help();
+}
+else {
+     run @args;
 }
 
+=finish
+
 for @*ARGS {
-    when /^ :i I / { 
-        ++$info; 
+    when /^ :i I / {
+        ++$info;
     }
     when /^ :i r / {
-         ++$remove; 
+         ++$remove;
     }
     when /^ :i L / {
          ++$latest;
     }
-    when /^ :i u / { 
+    when /^ :i u / {
         ++$upgrade;
     }
     default {
@@ -76,24 +61,24 @@ my @installed;
 if $latest {
 
     =begin comment
-    #my $proc = run 'zef', 'list', '--installed', 
-    my $proc = run 'zef', 'list', '--installed', 
+    #my $proc = run 'zef', 'list', '--installed',
+    my $proc = run 'zef', 'list', '--installed',
                    :out, :err;
     my @o = $proc.out.slurp(:close).lines;
     my $e = $proc.err.slurp(:close);
     =end comment
-    
+
     #for @m {
-    when /^ :i s / { 
-        ++$show; 
+    when /^ :i s / {
+        ++$show;
     }
     when /^ :i r / {
-         ++$remove; 
+         ++$remove;
     }
     when /^ :i L / {
          ++$latest;
     }
-    when /^ :i u / { 
+    when /^ :i u / {
         ++$upgrade;
     }
     default {
@@ -109,13 +94,13 @@ if $latest {
 if $latest {
 
     =begin comment
-    #my $proc = run 'zef', 'list', '--installed', 
-    my $proc = run 'zef', 'list', '--installed', 
+    #my $proc = run 'zef', 'list', '--installed',
+    my $proc = run 'zef', 'list', '--installed',
                    :out, :err;
     my @o = $proc.out.slurp(:close).lines;
     my $e = $proc.err.slurp(:close);
     =end comment
-    
+
     #for @m {
     for @dwarring {
         my $proc = run 'zef', 'locate', $_,
@@ -134,10 +119,10 @@ if $latest {
 #Running 'zef locate' on installed file 'MacOS::NativeLib':
 #  status: ===> From Distribution: MacOS::NativeLib:ver<0.0.4>:auth<zef:lizmat>:api<>
 #  info:   MacOS::NativeLib :ver<0.0.4> :auth<zef:lizmat> :api<>
-        
 
-        if $info ~~ / (.*)  
-                      [ ':' ver  '<' (<[\d.]>+) '>' ] 
+
+        if $info ~~ / (.*)
+                      [ ':' ver  '<' (<[\d.]>+) '>' ]
                       [ ':' auth '<' (<[\d.]>+) '>' ]
                       [ ':' api  '<' (<[\d.]>+) '>' ]
                     / {
@@ -152,7 +137,7 @@ if $latest {
         }
 
         =begin comment
-        my @chunks = split(/':' [ver|auth|api]/, $info).list; 
+        my @chunks = split(/':' [ver|auth|api]/, $info).list;
         say "chunks:";
         say "  $_" for @chunks;
         =end comment
@@ -215,11 +200,11 @@ if $show {
 }
 
 if $upgrade {
-    for @m { 
+    for @m {
         my $proc = run 'zef', 'upgrade', $_, :out, :err;
         my @lines = $proc.out.slurp(:close).lines;
         my $module = @lines.head.words.tail;
-     
+
         my $status = @lines.tail;
         if $status.contains("latest", :i) {
             $status = "Latest version";
@@ -231,10 +216,8 @@ if $upgrade {
         say "Module: $module";
         say "  Status: $status";
 
- 
+
 #        $proc.err.slurp(:close).say;
    #     say "debug early exit"; exit;
     }
 }
-
-
