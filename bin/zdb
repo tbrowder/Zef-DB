@@ -24,13 +24,11 @@ PDF::Lite
 >;
 =end comment
 
-my @args = @*ARGS;
-
-if not @args.elems {
+if not @*ARGS.elems {
     help();
 }
 else {
-     run @args;
+     run-prog @*ARGS;
 }
 
 =finish
