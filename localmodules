@@ -8,7 +8,7 @@ CSS::Grammar
 CSS::Module
 CSS::Module::CSS3::Selectors
 CSS::Properties
-CSS::Selector::To::Path
+CSS::Selector::To::XPath
 CSS::Specification
 CSS::Stylesheet
 CSS::TagSet

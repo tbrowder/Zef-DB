@@ -122,22 +122,53 @@ sub info (
     :$debug,
 ) is export {
     for @modules {
-        my $proc = run 'zef', 'locate', $_,
+        say "Running 'zef info' on module '$_':";
+        my $proc = run 'zef', 'info', $_,
                        :out, :err;
         my @o = $proc.out.slurp(:close).lines;
         my $e = $proc.err.slurp(:close);
-        say "Running 'zef locate' on installed file '$_':";
-        my $status = @o.head;
-        say "  raw status: $status";
-        my $info;
-        if $status ~~ / Distribution ':' \h* (\S+) / {
+        if $debug {
+            say "  All data on '$_'";
+        }
+        # extract the distribution line
+        my $distro;
+        for @o -> $line is copy {
+            if $line.contains("Identity") {
+                $distro = $line;
+                last;
+            }
+        }
+        if $debug {
+            say "  module info: |$distro|";
+        }
+        my $info = "UNKNOWN";
+        if $distro ~~ / Identity ':' \h* (\S+) / {
             $info = ~$0;
-            say "  module info: $info";
+            say "  module info: |$info|";
         }
 
-        #Running 'zef locate' on installed file 'MacOS::NativeLib':
-        #  status: ===> From Distribution: MacOS::NativeLib:ver<0.0.4>:auth<zef:lizmat>:api<>
+        #'zef locate' on installed file 'MacOS::NativeLib':
+        # ===> From Distribution: MacOS::NativeLib:ver<0.0.4>:auth<zef:lizmat>:api<>
         #  info:   MacOS::NativeLib :ver<0.0.4> :auth<zef:lizmat> :api<>
+        my @modparts = $info.split('::');
+        # the last part should contain the auth,ver,api
+        my $endpart = @modparts.pop;
+        my $modnam = @modparts.join("::");
+
+        my @vparts = $endpart.split(':');
+        # the first part contains the last of the name and the first of the auth
+        my $lnam = @vparts.pop;
+        $modnam ~= "::$lnam";
+        my $ver = @vparts.join(":");
+        
+        if $debug {
+            say "DEBUG splitting |\$info| on '::'";
+            say "  mod name so far:  |$modnam|";
+            say "  auth part so far: |$ver|";
+        }
+
+        #my @chunks = split(/':' [ver|auth|api]/, $info).list;
+        =begin comment
         if $info ~~ / (.*)
                       [ ':' ver  '<' (<[\d.]>+) '>' ]
                       [ ':' auth '<' (<[\d.]>+) '>' ]
@@ -152,6 +183,11 @@ sub info (
                say "  author : $auth";
                say "  api    : $api";
         }
+        else {
+            say "WARNING: Unrecognized format:";
+            say "==> $info";
+        }
+        =end comment
 
         =begin comment
         my @chunks = split(/':' [ver|auth|api]/, $info).list;
