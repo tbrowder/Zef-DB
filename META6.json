@@ -6,6 +6,7 @@
   "build-depends": [
   ],
   "depends": [
+    "JSON:Fast",
     "hyperize",
     "Text::Utils",
     "CSV::Table",

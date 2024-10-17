@@ -1,30 +1,40 @@
 unit module Zef::DB;
 
 use CSV::Table;
+use JSON::Fast;
 
-my @mymodules;
+my %mymodules;
 my $nmm;
 my $ifil;
+my $jfil;
 BEGIN {
     use Text::Utils :strip-comment, :normalize-string;
 
+    # the starter file:
     $ifil = "{$*CWD}/localmodules";
+    $jfil = "{$*CWD}/localmodules.json";
     my %mymodules;
-    if $ifil.IO.r {
-        for $ifil.IO.lines -> $line is copy {
-            $line = strip-comment $line;
-            next unless $line ~~ /\S+/;
-            $line = normalize-string $line;
-            if %mymodules{$line}:exists {
-                say "WARNING: Module '$line' is listed more than once";
+    if $jfil.IO.r {
+        # fill the JSON hash, no update needed
+        %mymodules = from-json(slurp $jfil);
+    }
+    elsif $ifil.IO.r {
+        # initiate the JSON hash
+        for $ifil.IO.lines -> $modnam is copy {
+            $modnam = strip-comment $modnam;
+            next unless $modnam line ~~ /\S+/;
+            $modnam = normalize-string $modnam;
+            if %mymodules{$modnam}:exists {
+                say "WARNING: Module '$modnam' is listed more than once";
             }
             else {
-                @mymodules.push: $line;
-                %mymodules{$line} = 1;
+                %mymodules{$modnam}<auth> = 0;
+                %mymodules{$modnam}<ver>  = 0;
+                %mymodules{$modnam}<api>  = 0;
             }
         }
-        @mymodules .= sort;
-        $nmm        = @mymodules.elems;
+        $nmm = %mymodules.elems;
+        # update the hash for a new JSON file
     }
 }
 
@@ -51,10 +61,15 @@ sub help() is export {
       r[emove]  - remove all but the latest version
                   using data from 'zef info'
       s[how]    - lists names of modules of interest
-      u[pgrade] - upgrade all if need be
+      upg[rade] - upgrade all if need be
+
+      upg[date] - update the database with 'zef'
+                  (note this is the only option which
+                  directly uses a 'zef' ecosystem-wide
+                  query and it uses a hyperized query)
 
     Options:
-      list=X  - use list in file X
+      list=X    - use list in file X
 
     HERE
     exit;
@@ -68,6 +83,7 @@ sub run-prog(@args) is export  {
     my $Rremove  = 0;
     my $Rshow    = 0;
     my $Rupgrade = 0;
+    my $Rupdate  = 0;
 
     my $debug    = 0;
 
@@ -87,7 +103,10 @@ sub run-prog(@args) is export  {
         when /^ :i s / {
             ++$Rshow;
         }
-        when /^ :i u / {
+        when /^ :i upd / {
+            ++$Rupdate;
+        }
+        when /^ :i upg / {
             ++$Rupgrade;
         }
         when /^ :i d / {
@@ -100,6 +119,9 @@ sub run-prog(@args) is export  {
     }
 
     if $Rinfo {
+        # race hyper it
+        # save data in a CSV file (or a hash or a JSON file!
+        # do it in a TWEAK?
         info @mymodules, :$debug;
     }
     elsif $Rlatest {
@@ -147,20 +169,33 @@ sub info (
             say "  module info: |$info|";
         }
 
-        #'zef locate' on installed file 'MacOS::NativeLib':
+        =begin comment
+        # output from: zef info Foo::Bar
+        ===> Searching for: Foo::Bar
+        - Info for: Foo::Bar
+        - Identity: Foo::Bar:ver<0.0.1>:auth<zef:tbrowder>
+        - Recommended By: Zef::Repository::Ecosystems<fez>
+        - Installed: Yes
+        Description:	 A module for foreign module testing for Mi6::Helper \
+                         development
+        License:	 Artistic-2.0
+        Source-url:	 https://github.com/tbrowder/Foo-Bar.git
+        Provides: 1 modules
+        Depends: 1 items
+        =end comment
+
+        #'zef info' on installed file 'MacOS::NativeLib':
         # ===> From Distribution: MacOS::NativeLib:ver<0.0.4>:auth<zef:lizmat>:api<>
         #  info:   MacOS::NativeLib :ver<0.0.4> :auth<zef:lizmat> :api<>
         my @modparts = $info.split('::');
         # the last part should contain the auth,ver,api
         my $endpart = @modparts.pop;
         my $modnam = @modparts.join("::");
-
         my @vparts = $endpart.split(':');
         # the first part contains the last of the name and the first of the auth
         my $lnam = @vparts.pop;
         $modnam ~= "::$lnam";
         my $ver = @vparts.join(":");
-        
         if $debug {
             say "DEBUG splitting |\$info| on '::'";
             say "  mod name so far:  |$modnam|";
