@@ -62,7 +62,7 @@ sub help() is export {
       s[how]    - lists names of modules of interest
       upg[rade] - upgrade all if need be
 
-      upg[date] - update the database with 'zef'
+      upd[ate]  - update the database with 'zef'
                   (note this is the only option which
                   directly uses a 'zef' ecosystem-wide
                   query and it uses a hyperized query)
@@ -139,10 +139,13 @@ sub run-prog(@args) is export  {
 }
 
 sub info (
-    @modules,
+    %modules,
     :$debug,
 ) is export {
-    for @modules {
+
+    my $n = 0;
+    for %modules.keys.sort {
+        ++$n;
         say "Running 'zef info' on module '$_':";
         my $proc = run 'zef', 'info', $_,
                        :out, :err;
@@ -165,7 +168,7 @@ sub info (
         my $info = "UNKNOWN";
         if $distro ~~ / Identity ':' \h* (\S+) / {
             $info = ~$0;
-            say "  module info: |$info|";
+            say "  module info: |$info|" if $debug and $n > 1;
         }
 
         =begin comment
@@ -183,26 +186,40 @@ sub info (
         Depends: 1 items
         =end comment
 
-        #'zef info' on installed file 'MacOS::NativeLib':
-        # ===> From Distribution: MacOS::NativeLib:ver<0.0.4>:auth<zef:lizmat>:api<>
-        #  info:   MacOS::NativeLib :ver<0.0.4> :auth<zef:lizmat> :api<>
-        my @modparts = $info.split('::');
+        =begin comment
+        Running 'zef info' on module 'Base64::Native':
+          All data on 'Base64::Native'
+          module info: |- Identity: Base64::Native:ver<0.0.9>:auth<zef:dwarring>|
+          module info: |Base64::Native:ver<0.0.9>:auth<zef:dwarring>|
+        DEBUG splitting |$info| on '::'
+          mod name so far:  |Base64::dwarring>|
+          auth part so far: |Native:ver<0.0.9>:auth<zef|
+        DEBUG: exit from sub 'info'
+        =end comment
+
+        my @modparts = $info.split('::', :v);
+        # the first part should contain the module name
+        my $modname = @modparts.head;
+
         # the last part should contain the auth,ver,api
-        my $endpart = @modparts.pop;
-        my $modnam = @modparts.join("::");
+        my $endpart = @modparts.tail;
+        #@modparts.push: $endpart;
+        #my $modnam = @modparts.join("::");
+
+        if $debug {
+            say "DEBUG splitting |\$info| on '::'";
+            say "  mod name so far: |$modname|";
+            say "  end part so far: |$endpart|";
+        }
+
+        =begin comment
         my @vparts = $endpart.split(':');
         # the first part contains the last of the name and the first of the auth
         my $lnam = @vparts.pop;
         $modnam ~= "::$lnam";
         my $ver = @vparts.join(":");
-        if $debug {
-            say "DEBUG splitting |\$info| on '::'";
-            say "  mod name so far:  |$modnam|";
-            say "  auth part so far: |$ver|";
-        }
 
         #my @chunks = split(/':' [ver|auth|api]/, $info).list;
-        =begin comment
         if $info ~~ / (.*)
                       [ ':' ver  '<' (<[\d.]>+) '>' ]
                       [ ':' auth '<' (<[\d.]>+) '>' ]
@@ -228,6 +245,13 @@ sub info (
         say "chunks:";
         say "  $_" for @chunks;
         =end comment
+
+        if $debug {
+            if $n == 1 {
+                say "DEBUG: exit from sub 'info'";
+                exit;
+            }
+        }
     }
 
 } # sub info
