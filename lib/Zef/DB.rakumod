@@ -13,7 +13,6 @@ BEGIN {
     # the starter file:
     $ifil = "{$*CWD}/localmodules";
     $jfil = "{$*CWD}/localmodules.json";
-    my %mymodules;
     if $jfil.IO.r {
         # fill the JSON hash, no update needed
         %mymodules = from-json(slurp $jfil);
@@ -22,7 +21,7 @@ BEGIN {
         # initiate the JSON hash
         for $ifil.IO.lines -> $modnam is copy {
             $modnam = strip-comment $modnam;
-            next unless $modnam line ~~ /\S+/;
+            next if $modnam !~~ /\S+/;
             $modnam = normalize-string $modnam;
             if %mymodules{$modnam}:exists {
                 say "WARNING: Module '$modnam' is listed more than once";
@@ -122,19 +121,19 @@ sub run-prog(@args) is export  {
         # race hyper it
         # save data in a CSV file (or a hash or a JSON file!
         # do it in a TWEAK?
-        info @mymodules, :$debug;
+        info %mymodules, :$debug;
     }
     elsif $Rlatest {
-        latest @mymodules, :$debug;
+        latest %mymodules, :$debug;
     }
     elsif $Rremove {
-        remove @mymodules, :$debug;
+        remove %mymodules, :$debug;
     }
     elsif $Rshow {
-        show @mymodules, :$debug;
+        show %mymodules, :$debug;
     }
     elsif $Rupgrade {
-        upgrade @mymodules, :$debug;
+        upgrade %mymodules, :$debug;
     }
     exit;
 }
@@ -275,7 +274,7 @@ sub show(
     =end comment
 
     say "Modules in your list:";
-    say "  $_" for @mymodules;
+    say "  $_" for %mymodules.keys.sort;
     say "A total of $nmm modules in your list.";
 
     exit;
