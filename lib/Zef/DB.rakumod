@@ -143,17 +143,23 @@ sub info (
     :$debug,
 ) is export {
 
-    my $n = 0;
+    my $n    =  0;
+    my $maxn =  7;
     for %modules.keys.sort {
         ++$n;
+        if $debug {
+            next unless $n == $maxn;
+        }
+
         say "Running 'zef info' on module '$_':";
         my $proc = run 'zef', 'info', $_,
                        :out, :err;
         my @o = $proc.out.slurp(:close).lines;
         my $e = $proc.err.slurp(:close);
         if $debug {
-            say "  All data on '$_'";
+            say "  DEBUG data on '$_'";
         }
+
         # extract the distribution line
         my $distro;
         for @o -> $line is copy {
@@ -162,13 +168,13 @@ sub info (
                 last;
             }
         }
-        if $debug {
+        if 0 and $debug {
             say "  module info: |$distro|";
         }
         my $info = "UNKNOWN";
         if $distro ~~ / Identity ':' \h* (\S+) / {
             $info = ~$0;
-            say "  module info: |$info|" if $debug and $n > 1;
+            say "  module $n Identity info: |$info|" if $debug and $n > 1;
         }
 
         =begin comment
@@ -197,7 +203,90 @@ sub info (
         DEBUG: exit from sub 'info'
         =end comment
 
-        my @modparts = $info.split('::', :v);
+        my @parts1   = $info.split('::', :v, :skip-empty);
+        my @modparts = @parts1;
+        my $endpart  = @modparts.pop;
+        my $modnam   = @modparts.join('');
+
+        #my @parts2 = $endpart.split(':', :v, :skip-empty);
+        #my @parts2 = $endpart.split(':', :skip-empty);
+        my @parts2 = $endpart.split(':', 2);
+        $modnam ~= @parts2.shift;
+
+        my $chunk = @parts2.join('');
+        say "DEBUG: \$chunk = '$chunk'";
+        my $i1 = $chunk.index:  ':';
+        my $i2 = $chunk.rindex: ':';
+
+        # chumks 1..3 so far are ok
+        # auth
+        my $c1 = $chunk.substr: 0, $i1;
+        # ver
+        my $c2 = $chunk.substr: $i1+1..$i2-1;
+        # api
+        my $c3 = $chunk.substr: $i2+1;
+
+        if 0 and $debug {
+             say "DEBUG: c1 = '$c1'";
+             say "DEBUG: c2 = '$c2'";
+             say "DEBUG: c3 = '$c3'";
+        }
+
+
+        my ($auth, $ver, $api) = "", "", "";;
+        # version parts:
+        my ($major, $minor, $point) = "", "", "";;
+        for ($c1, $c2, $c3).kv -> $i, $s {
+            say "DEBUG: \@chunks i = $i, s = '$s'";
+        }
+        $auth = $c1;
+        $ver  = $c2;
+        $api  = $c3;
+
+        if $auth ~~ / 'auth\<' \h* (\S+) '>' \h* / {
+            my $s = ~$0;
+            $auth = $s;
+        }
+        else {
+            say "DEBUG: auth = '$auth'";
+        }
+
+        if $ver  ~~ / 'ver\<' \h* (\S+) '>' \h* / {
+            my $s = ~$0;
+            $ver = $s;
+            my @s = $s.split: '.';
+            my $ne = @s.elems;
+            unless $ne == 3 {
+                die "FATAL: version elements == $ne (should be 3)";
+            }
+            $major = @s.shift;
+            $minor = @s.shift;
+            $point = @s.shift;
+        }
+        else {
+            say "DEBUG: ver = '$ver'";
+        }
+
+        if $api  ~~ / 'api\<' \h* (\S+) '>' \h* / {
+            my $s = +$0;
+            $api = $s;
+        }
+        else {
+            say "DEBUG: api = '$api'";
+        }
+
+        if $debug {
+            say "DEBUG:";
+            say "\$modnam  = '$modnam'";
+            say "  auth = '$auth'";
+            say "  ver:";
+            say "    major = '$major'";
+            say "    minor = '$minor'";
+            say "    point = '$point'";
+            say "  api = '$api'";
+        }
+
+        =begin comment
         # the first part should contain the module name
         my $modname = @modparts.head;
 
@@ -247,7 +336,7 @@ sub info (
         =end comment
 
         if $debug {
-            if $n == 1 {
+            if $n == $maxn {
                 say "DEBUG: exit from sub 'info'";
                 exit;
             }
