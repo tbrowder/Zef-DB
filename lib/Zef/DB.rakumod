@@ -242,6 +242,12 @@ sub info (
         $auth = $c1;
         $ver  = $c2;
         $api  = $c3;
+        for ($auth, $ver, $api).kv -> $i, $s {
+            my $i1 = $s.index: '<';
+            my $i2 = $s.rindex: '>';
+            my $contents = $s.substr: $i1+1..$i2-1;
+            say "DEBUG: contents for chunk $s = '$contents'" if $debug;
+        }
 
         if $auth ~~ / 'auth\<' \h* (\S+) '>' \h* / {
             my $s = ~$0;
