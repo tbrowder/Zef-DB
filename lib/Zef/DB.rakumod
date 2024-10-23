@@ -238,17 +238,45 @@ sub info (
         my ($major, $minor, $point) = "", "", "";;
         for ($c1, $c2, $c3).kv -> $i, $s {
             say "DEBUG: \@chunks i = $i, s = '$s'";
+            if $s ~~ /auth/ {
+                $auth = $s;
+            }
+            elsif $s ~~ /ver/ {
+                $ver  = $s;
+            }
+            elsif $s ~~ /api/ {
+                $api  = $s;
+            }
+            else {
+                die "FATAL: Unexpected chunk '$s'"
+            }
         }
-        $auth = $c1;
-        $ver  = $c2;
-        $api  = $c3;
         for ($auth, $ver, $api).kv -> $i, $s {
             my $i1 = $s.index: '<';
             my $i2 = $s.rindex: '>';
             my $contents = $s.substr: $i1+1..$i2-1;
             say "DEBUG: contents for chunk $s = '$contents'" if $debug;
+            if $i == 0 {
+                 $auth = $contents;
+            }
+            elsif $i == 1 {
+                $ver = $contents;
+                my @s = $ver.split: '.';
+                my $ne = @s.elems;
+                unless $ne == 3 {
+                    die "FATAL: version elements == $ne (should be 3)";
+                }
+                $major = @s.shift if @s.elems;
+                $minor = @s.shift if @s.elems;
+                $point = @s.shift if @s.elems;
+            }
+            elsif $i == 2 {
+               $api = $contents;
+            }
+      
         }
 
+        =begin comment
         if $auth ~~ / 'auth\<' \h* (\S+) '>' \h* / {
             my $s = ~$0;
             $auth = $s;
@@ -256,7 +284,6 @@ sub info (
         else {
             say "DEBUG: auth = '$auth'";
         }
-
         if $ver  ~~ / 'ver\<' \h* (\S+) '>' \h* / {
             my $s = ~$0;
             $ver = $s;
@@ -272,7 +299,6 @@ sub info (
         else {
             say "DEBUG: ver = '$ver'";
         }
-
         if $api  ~~ / 'api\<' \h* (\S+) '>' \h* / {
             my $s = +$0;
             $api = $s;
@@ -280,6 +306,7 @@ sub info (
         else {
             say "DEBUG: api = '$api'";
         }
+        =end comment
 
         if $debug {
             say "DEBUG:";
