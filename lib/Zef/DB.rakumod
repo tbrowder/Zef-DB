@@ -147,9 +147,9 @@ sub info (
     my $maxn =  7;
     for %modules.keys.sort {
         ++$n;
-        if $debug {
-            next unless $n == $maxn;
-        }
+#       if $debug {
+#           next unless $n == $maxn;
+#       }
 
         say "Running 'zef info' on module '$_':";
         my $proc = run 'zef', 'info', $_,
@@ -168,8 +168,9 @@ sub info (
                 last;
             }
         }
-        if 0 and $debug {
-            say "  module info: |$distro|";
+        if $debug {
+            say "  DEBUG module info: |$distro|";
+            next;
         }
         my $info = "UNKNOWN";
         if $distro ~~ / Identity ':' \h* (\S+) / {

@@ -1,0 +1,141 @@
+Running 'zef info' on module 'Base64::Native':
+  DEBUG data on 'Base64::Native'
+  DEBUG module info: |- Identity: Base64::Native:ver<0.0.9>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS':
+  DEBUG data on 'CSS'
+  DEBUG module info: |- Identity: CSS:ver<0.1.1>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS::Font::Resources':
+  DEBUG data on 'CSS::Font::Resources'
+  DEBUG module info: |- Identity: CSS::Font::Resources:ver<0.0.9>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS::Grammar':
+  DEBUG data on 'CSS::Grammar'
+  DEBUG module info: |- Identity: CSS::Grammar:ver<0.3.11>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS::Module':
+  DEBUG data on 'CSS::Module'
+  DEBUG module info: |- Identity: CSS::Module:ver<0.6.6>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS::Module::CSS3::Selectors':
+  DEBUG data on 'CSS::Module::CSS3::Selectors'
+  DEBUG module info: |- Identity: CSS::Module::CSS3::Selectors:ver<0.0.6>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS::Properties':
+  DEBUG data on 'CSS::Properties'
+  DEBUG module info: |- Identity: CSS::Properties:ver<0.9.7>:auth<zef:dwarring>:api<0.9>|
+Running 'zef info' on module 'CSS::Selector::To::XPath':
+  DEBUG data on 'CSS::Selector::To::XPath'
+  DEBUG module info: |- Identity: CSS::Selector::To::XPath:ver<0.0.8>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS::Specification':
+  DEBUG data on 'CSS::Specification'
+  DEBUG module info: |- Identity: CSS::Specification:ver<0.4.13>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS::Stylesheet':
+  DEBUG data on 'CSS::Stylesheet'
+  DEBUG module info: |- Identity: CSS::Stylesheet:ver<0.1.2>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS::TagSet':
+  DEBUG data on 'CSS::TagSet'
+  DEBUG module info: |- Identity: CSS::TagSet:ver<0.1.2>:auth<zef:dwarring>|
+Running 'zef info' on module 'CSS::Writer':
+  DEBUG data on 'CSS::Writer'
+  DEBUG module info: |- Identity: CSS::Writer:ver<0.2.10>:auth<zef:dwarring>|
+Running 'zef info' on module 'Crypt::RC4':
+  DEBUG data on 'Crypt::RC4'
+  DEBUG module info: |- Identity: Crypt::RC4:ver<0.0.6>:auth<zef:dwarring>|
+Running 'zef info' on module 'FDF':
+  DEBUG data on 'FDF'
+  DEBUG module info: |- Identity: FDF:ver<0.0.4>:auth<zef:dwarring>|
+Running 'zef info' on module 'Font::AFM':
+  DEBUG data on 'Font::AFM'
+  DEBUG module info: |- Identity: Font::AFM:ver<1.24.10>:auth<zef:dwarring>|
+Running 'zef info' on module 'Font::FreeType':
+  DEBUG data on 'Font::FreeType'
+  DEBUG module info: |- Identity: Font::FreeType:ver<0.5.9>:auth<zef:dwarring>|
+Running 'zef info' on module 'FontConfig':
+  DEBUG data on 'FontConfig'
+  DEBUG module info: |- Identity: FontConfig:ver<0.1.5>:auth<zef:dwarring>|
+Running 'zef info' on module 'HTML::Canvas':
+  DEBUG data on 'HTML::Canvas'
+  DEBUG module info: |- Identity: HTML::Canvas:ver<0.1.2>:auth<zef:dwarring>|
+Running 'zef info' on module 'HTML::Canvas::To::PDF':
+  DEBUG data on 'HTML::Canvas::To::PDF'
+  DEBUG module info: |- Identity: HTML::Canvas::To::PDF:ver<0.0.12>:auth<zef:dwarring>|
+Running 'zef info' on module 'HarfBuzz':
+  DEBUG data on 'HarfBuzz'
+  DEBUG module info: |- Identity: HarfBuzz:ver<0.1.3>:auth<zef:dwarring>|
+Running 'zef info' on module 'HarfBuzz::Font::FreeType':
+  DEBUG data on 'HarfBuzz::Font::FreeType'
+  DEBUG module info: |- Identity: HarfBuzz::Font::FreeType:ver<0.0.10>:auth<zef:dwarring>|
+Running 'zef info' on module 'HarfBuzz::Shaper::Cairo':
+  DEBUG data on 'HarfBuzz::Shaper::Cairo'
+  DEBUG module info: |- Identity: HarfBuzz::Shaper::Cairo:ver<0.0.7>:auth<zef:dwarring>|
+Running 'zef info' on module 'HarfBuzz::Subset':
+  DEBUG data on 'HarfBuzz::Subset'
+  DEBUG module info: |- Identity: HarfBuzz::Subset:ver<0.0.5>:auth<zef:dwarring>|
+Running 'zef info' on module 'LWP::Simple':
+  DEBUG data on 'LWP::Simple'
+  DEBUG module info: |- Identity: LWP::Simple:ver<0.109>:auth<zef:dwarring>|
+Running 'zef info' on module 'LibXML':
+  DEBUG data on 'LibXML'
+  DEBUG module info: |- Identity: LibXML:ver<0.10.9>:auth<zef:dwarring>:api<0.10.0>|
+Running 'zef info' on module 'LibXML::Writer':
+  DEBUG data on 'LibXML::Writer'
+  DEBUG module info: |- Identity: LibXML::Writer:ver<0.0.3>:auth<zef:dwarring>|
+Running 'zef info' on module 'LibXSLT':
+  DEBUG data on 'LibXSLT'
+  DEBUG module info: |- Identity: LibXSLT:ver<0.1.7>:auth<zef:dwarring>|
+Running 'zef info' on module 'Native::Packing':
+  DEBUG data on 'Native::Packing'
+  DEBUG module info: |- Identity: Native::Packing:ver<0.0.6>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF':
+  DEBUG data on 'PDF'
+  DEBUG module info: |- Identity: PDF:ver<0.6.8>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::API6':
+  DEBUG data on 'PDF::API6'
+  DEBUG module info: |- Identity: PDF::API6:ver<0.2.8>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Class':
+  DEBUG data on 'PDF::Class'
+  DEBUG module info: |- Identity: PDF::Class:ver<0.5.22>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Content':
+  DEBUG data on 'PDF::Content'
+  DEBUG module info: |- Identity: PDF::Content:ver<0.8.10>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Font::Loader':
+  DEBUG data on 'PDF::Font::Loader'
+  DEBUG module info: |- Identity: PDF::Font::Loader:ver<0.8.8>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Font::Loader::CSS':
+  DEBUG data on 'PDF::Font::Loader::CSS'
+  DEBUG module info: |- Identity: PDF::Font::Loader::CSS:ver<0.0.1>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Font::Loader::HarfBuzz':
+  DEBUG data on 'PDF::Font::Loader::HarfBuzz'
+  DEBUG module info: |- Identity: PDF::Font::Loader::HarfBuzz:ver<0.0.1>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Grammar':
+  DEBUG data on 'PDF::Grammar'
+  DEBUG module info: |- Identity: PDF::Grammar:ver<0.3.2>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::ISO_32000':
+  DEBUG data on 'PDF::ISO_32000'
+  DEBUG module info: |- Identity: PDF::ISO_32000:ver<0.0.13>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::ISO_32000_2':
+  DEBUG data on 'PDF::ISO_32000_2'
+  DEBUG module info: |- Identity: PDF::ISO_32000_2:ver<0.0.3>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Lite':
+  DEBUG data on 'PDF::Lite'
+  DEBUG module info: |- Identity: PDF::Lite:ver<0.0.14>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Native':
+  DEBUG data on 'PDF::Native'
+  DEBUG module info: |- Identity: PDF::Native:ver<0.1.10>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Tags':
+  DEBUG data on 'PDF::Tags'
+  DEBUG module info: |- Identity: PDF::Tags:ver<0.1.18>:auth<zef:dwarring>|
+Running 'zef info' on module 'PDF::Tags::Reader':
+  DEBUG data on 'PDF::Tags::Reader'
+  DEBUG module info: |- Identity: PDF::Tags::Reader:ver<0.0.13>:auth<zef:dwarring>|
+Running 'zef info' on module 'Pod::To::Cairo':
+  DEBUG data on 'Pod::To::Cairo'
+  DEBUG module info: |- Identity: Pod::To::PDF:ver<0.1.6>:auth<zef:dwarring>|
+Running 'zef info' on module 'Pod::To::PDF':
+  DEBUG data on 'Pod::To::PDF'
+  DEBUG module info: |- Identity: Pod::To::PDF:ver<0.1.6>:auth<zef:dwarring>|
+Running 'zef info' on module 'Pod::To::PDF::Lite':
+  DEBUG data on 'Pod::To::PDF::Lite'
+  DEBUG module info: |- Identity: Pod::To::PDF::Lite:ver<0.1.9>:auth<zef:dwarring>|
+Running 'zef info' on module 'Text::FriBidi':
+  DEBUG data on 'Text::FriBidi'
+  DEBUG module info: |- Identity: Text::FriBidi:ver<0.0.4>:auth<zef:dwarring>|
+Running 'zef info' on module 'W3C::DOM':
+  DEBUG data on 'W3C::DOM'
+  DEBUG module info: |- Identity: W3C::DOM:ver<0.0.3>:auth<zef:dwarring>|
