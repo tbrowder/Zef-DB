@@ -8,11 +8,32 @@ my $ifil = "mods.list";
 my $part1 = "- Identity: "; # mod info follows
 my $np1   = $part1.chars;
 
+class Identity {
+    # data are extracted from the Identity line from "zef info module-name"
+    has $.name is rw;
+    has $.auth is rw;
+    has $.api is rw;
+    has $.ver is rw; # standard has three parts: n.n.n
+
+    # parts of standard version:
+    has $.major is rw;
+    has $.minor is rw;
+    has $.point is rw;
+}
+
+my @mods; # hold the class data
+
+my $debug = 0;
 for $ifil.IO.lines -> $line is copy {
+
+    my $m = Identity.new;
+    @mods.push: $m;
+
+
     my $idx = $line.index: $part1;
-    say "first index = $idx; $np1 chars long";
+    say "first index = $idx; $np1 chars long" if $debug;
     my $info = $line.substr: $idx+$np1;   
-    say "  info data: >|$info|<";
+    say "  info data: >|$info|<" if $debug;
 
     # we need length of the first part and the second part
     my ($len1, $len2);
@@ -29,7 +50,7 @@ for $ifil.IO.lines -> $line is copy {
     }
     else {
         # start from the left side and go to one postion past it
-        $idx2 = $info.index: ':', $idx+2;
+        $idx2 = $info.index: ':';
     }
     $idx2 += 1;
     $len1 = $idx2-1;
@@ -38,8 +59,10 @@ for $ifil.IO.lines -> $line is copy {
     my $modname = $info.substr: 0, $len1;
     my $part2   = $info.substr: $idx2;
 
-    say "    modname: >|$modname|<";
-    say "    part2:   >|$part2|<";
+    $m.name = $modname;
+
+    say "    modname: >|$modname|<" if $debug;
+    say "    part2:   >|$part2|<" if $debug;
 
     # the two parts are perfect; now break part2 into :auth: :ver, :api
     my ($auth, $ver, $api) = "auth<", "ver<", "api<";
@@ -57,7 +80,8 @@ for $ifil.IO.lines -> $line is copy {
     else {
         $auth = "";
     }
-    say "    auth:    >|$auth|<";
+    say "    auth:    >|$auth|<" if $debug;
+    $m.auth = $auth;
 
     my $p1 = $part2.index: $ver;
     # $p1 must be defined
@@ -68,18 +92,24 @@ for $ifil.IO.lines -> $line is copy {
         $ver = $part2.substr: $p1..$pend;
         my @c = $ver.split: '.';
         if @c.elems != 3 {
-            note "WARNING: version does not have three parts, it has {@c.elems}";
-            say "    ver:     >|$ver|<";
+            note "WARNING: version does not have three parts, it has {@c.elems}" if $debug;
+            say "    ver:     >|$ver|<" if $debug;
+            $m.ver = $ver;
         }
         else {
             $major = @c.shift;
             $minor = @c.shift;
             $point = @c.shift;
 
-            say "    ver:     >|$ver|<";
-            say "      major:   >|$major|<";
-            say "      minor:   >|$minor|<";
-            say "      point:   >|$point|<";
+            say "    ver:     >|$ver|<" if $debug;
+            say "      major:   >|$major|<" if $debug;
+            say "      minor:   >|$minor|<" if $debug;
+            say "      point:   >|$point|<" if $debug;
+
+            $m.ver   = $ver;
+            $m.major = $major;
+            $m.minor = $minor;
+            $m.point = $point;
         }
 
     }
@@ -98,8 +128,10 @@ for $ifil.IO.lines -> $line is copy {
     else {
         $api = "";
     }
-    say "    api:     >|$api|<";
+    say "    api:     >|$api|<" if $debug;
+    $m.api = $api;
 
 }
 
+say "n mods = {@mods.elems}";
 
