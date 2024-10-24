@@ -41,7 +41,6 @@
   DEBUG module info: - Identity: PDF::Tags:ver<0.1.18>:auth<zef:dwarring>
   DEBUG module info: - Identity: PDF::Tags::Reader:ver<0.0.13>:auth<zef:dwarring>
   DEBUG module info: - Identity: Pod::To::PDF:ver<0.1.6>:auth<zef:dwarring>
-  DEBUG module info: - Identity: Pod::To::PDF:ver<0.1.6>:auth<zef:dwarring>
   DEBUG module info: - Identity: Pod::To::PDF::Lite:ver<0.1.9>:auth<zef:dwarring>
   DEBUG module info: - Identity: Text::FriBidi:ver<0.0.4>:auth<zef:dwarring>
   DEBUG module info: - Identity: W3C::DOM:ver<0.0.3>:auth<zef:dwarring>
