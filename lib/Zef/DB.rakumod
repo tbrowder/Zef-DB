@@ -13,15 +13,15 @@ BEGIN {
     # the starter file:
     $ifil = "{$*CWD}/localmodules";
     $jfil = "{$*CWD}/localmodules.json";
-    if $jfil.IO.r {
+    if $jfil.IO.e {
         # fill the JSON hash, no update needed
         %mymodules = from-json(slurp $jfil);
     }
-    elsif $ifil.IO.r {
+    elsif $ifil.IO.e {
         # initiate the JSON hash
         for $ifil.IO.lines -> $modnam is copy {
             $modnam = strip-comment $modnam;
-            next if $modnam !~~ /\S+/;
+            next if $modnam !~~ /\S/;
             $modnam = normalize-string $modnam;
             if %mymodules{$modnam}:exists {
                 say "WARNING: Module '$modnam' is listed more than once";
@@ -399,7 +399,7 @@ sub remove(
 } # sub remove
 
 sub show(
-    @modules,
+    %modules,
     :$debug,
     ) is export {
     
