@@ -7,30 +7,37 @@
 class Identity {
     # data are extracted from the Identity line from "zef info module-name"
     has $.identity is rw;
-    has $.name is rw;
-    has $.auth is rw;
-    has $.api is rw;
-    has $.ver is rw; # standard has three parts: n.n.n
+
+    # the parts of the Identity line:
+
+    has $.name is rw; # may have one or more embedded '::'
+
+    has $.auth is rw; # may have an embedded ':'
+    has $.api  is rw; # expect an integer, but check for any decimal
+    has $.ver  is rw; # standard has three parts: n.n.n
 
     # parts of standard version:
     has $.major is rw;
     has $.minor is rw;
     has $.point is rw;
-    has $.total-releases is rw = 0;;
+
+    has $.total-releases is rw = 0;
 }
 
 my $debug = 0;
 
+# use a list of modules extracted by zef:
 my $ifil = "mods.list";
-my @mods; # hold the class data
+my @modules; # hold the class data
 
 my $part1 = "- Identity: "; # mod info follows
 my $np1   = $part1.chars;
 my %mnam; # check for duplicate module names
+
 for $ifil.IO.lines -> $line is copy {
 
     my $m = Identity.new;
-    @mods.push: $m;
+    @modules.push: $m;
     $m.identity = $line;
 
     my $idx = $line.index: $part1;
@@ -147,17 +154,17 @@ for $ifil.IO.lines -> $line is copy {
 
 }
 
-say "n mods = {@mods.elems}";
+say "number of modules = {@modules.elems}";
 
-#for @mods {
+#for @modules {
 #    say $_.identity;
 #}
 
 # now calculate stats for David's award rec:
 
-# for each mod, calculate version stats
+# for each module, calculate version stats
 my ($tmajor, $tminor, $tpoint) = 0, 0, 0;
-for @mods {
+for @modules {
     my $nam = $_.name;
     my $ma  = $_.major;
     if $ma < 0 {
@@ -179,7 +186,7 @@ for @mods {
 my $ttotal = $tmajor + $tminor + $tpoint;
 
 print qq:to/HERE/;
-Total modules: {@mods.elems}
+Total modules: {@modules.elems}
   Major releases: $tmajor
   Minor releases: $tminor
   Point releases: $tpoint
@@ -191,7 +198,7 @@ say();
 
 # get the totals per module in order high to low
 my %most; # keyed by number
-for @mods {
+for @modules {
     my $n = $_.name;
     my $t = $_.total-releases;
     if %most{$t}:exists {
@@ -209,14 +216,14 @@ my @keys = %most.keys.sort({ $^a <=> $^b }).reverse;
 #say $_ for @keys;
 my $trel = 0;
 for @keys -> $key {
-    say "$key releases:";
+    say "Modules with $key releases:";
     my @m = @(%most{$key}).sort;
     for @m -> $nam {
         say "  '$nam'";
     }
     my $n = @m.elems;
     my $nrel = $n * $key.Int;
-    say "  set total releases: $nrel";
+    say "  Module set total releases: $nrel";
     $trel += $nrel;
 }
 say "Total releases: $trel";
