@@ -1,6 +1,8 @@
 #!/usr/bin/env raku
 
+use Text::Utils :normalize-string;
 use hyperize;
+
 my @modules = < Foo::Bar hyperize >;
 
 class MData {
@@ -15,6 +17,8 @@ class MData {
     has $.provides;   # number of modules
     has $.depends;    # number of dependencies
     has $.source-db;  # fez, etc.
+    has $.debug;
+    has $.modname;
 
     =begin comment
     # output from: zef info Foo::Bar
@@ -35,7 +39,7 @@ class MData {
         my $mnam2; # for sanity check
 
         # break $info into lines
-        my @lines = $info.lines;
+        my @lines = $!info.lines;
         for @lines {
             when /\h* '- Info for:' \h+ (\S+) / {
                 $mnam1 = ~$0;
@@ -73,8 +77,8 @@ class MData {
                 $!depends = +$0;
             }
             default {
-                if $debug {
-                    die qq:to/HERE;;
+                if $!debug {
+                    die qq:to/HERE/;
                     FATAL: Unhandled  arg in 'zef info'
                            parse.
                     HERE
@@ -83,7 +87,7 @@ class MData {
             }
 
             unless ($!modname, $mnam1, $mnam2).equiv {
-                die qq:to/HERE;;
+                die qq:to/HERE/;
                 FATAL: module names: modname, mnam1, and
                        mnam2 are NOT identical
                 HERE
@@ -92,7 +96,7 @@ class MData {
         }
 
         # take the raw $info and deconstruct it
-        my @modparts = $info.split('::');
+        my @modparts = $!info.split('::');
         # the last part should contain the auth,ver,api
         my $endpart = @modparts.pop;
         my $modnam = @modparts.join("::");
@@ -101,7 +105,7 @@ class MData {
         my $lnam = @vparts.pop;
         $modnam ~= "::$lnam";
         my $ver = @vparts.join(":");
-        if $debug {
+        if $!debug {
             say "DEBUG splitting |\$info| on '::'";
             say "  mod name so far:  |$modnam|";
             say "  auth part so far: |$ver|";
@@ -121,7 +125,7 @@ my @results = @modules.&racify(1, 8).map( {
 
     # this just adds the name of
     # current module:
-    $_
+#   $_
 
     # do the analysis here...
     # from the original code

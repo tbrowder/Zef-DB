@@ -380,7 +380,7 @@ sub info (
 } # sub info
 
 sub latest(
-    @modules,
+    %modules,
     :$debug,
 ) is export {
     # zef info
